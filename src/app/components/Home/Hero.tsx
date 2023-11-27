@@ -7,7 +7,7 @@ function Hero() {
 			<div>
 				<h2 className="text-[40px] md:text-[60px] font-bold">
 					Premium Car{" "}
-					<span className="text-blue-600">Rental</span>
+					<span className="text-blue-600">Rental </span>
 					in Your Area
 				</h2>
 				<h2 className="text-[20px] text-gray-500">
