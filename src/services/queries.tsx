@@ -8,6 +8,9 @@ export const GET_CAR_LIST = gql`
 			id
 			name
 			price
+			carBrand
+			carType
+			seat
 			publishedAt
 			updatedAt
 		}
