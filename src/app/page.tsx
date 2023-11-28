@@ -1,6 +1,8 @@
 import CarsFilterOption from "./components/Home/CarsFilterOption";
 import Hero from "./components/Home/Hero";
 import SearchInput from "./components/Home/SearchInput";
+import { useEffect } from "react";
+import { getCarList } from "@/services/functions";
 
 export default function Home() {
 	return (

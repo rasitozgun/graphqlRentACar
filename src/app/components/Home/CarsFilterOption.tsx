@@ -9,14 +9,14 @@ function CarsFilterOption() {
 			</div>
 			<div className="flex gap-5">
 				<select className="select select-bordered w-full md:block max-w-xs hidden">
-					<option disabled selected>
+					<option disabled defaultValue={"price"}>
 						Price
 					</option>
 					<option>Min to Max</option>
 					<option>Max to Min</option>
 				</select>
 				<select className="select select-bordered w-full max-w-xs">
-					<option disabled selected>
+					<option disabled defaultValue={"manufacturer"}>
 						Manufacturer
 					</option>
 					<option>Honda</option>

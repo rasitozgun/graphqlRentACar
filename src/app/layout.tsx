@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
 import Navbar from "./components/Navbar";
+import Providers from "@/services/Providers";
 
 const inter = Outfit({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
+		<Providers>
 			<html lang="en">
 				<body className={inter.className}>
 					<SignedIn>
@@ -29,6 +30,6 @@ export default function RootLayout({
 					</SignedOut>
 				</body>
 			</html>
-		</ClerkProvider>
+		</Providers>
 	);
 }
