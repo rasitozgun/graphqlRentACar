@@ -31,15 +31,34 @@ const carReducer = (state: State, action: Action): State => {
 				filteredCarList: action.payload,
 			};
 		case "SET_SELECTED_BRAND":
-			return { ...state, selectedBrand: action.payload };
+			return {
+				...state,
+				selectedBrand: action.payload,
+			};
 		case "SET_PRICE_FILTER":
-			return { ...state, priceFilter: action.payload };
+			return {
+				...state,
+				priceFilter: action.payload,
+				filteredCarList: filterCars(action.payload, state.carList),
+			};
 		case "FILTER_CARS":
 			// Filtreleme işlemleri burada yapılacak
 			return state;
 		default:
 			return state;
 	}
+};
+
+const filterCars = (priceFilter: string | null, carList: Car[]): Car[] => {
+	let filteredList = carList;
+
+	if (priceFilter === "mintomax") {
+		filteredList = filteredList.sort((a, b) => a.price - b.price);
+	} else if (priceFilter === "maxtomin") {
+		filteredList = filteredList.sort((a, b) => b.price - a.price);
+	}
+
+	return filteredList;
 };
 
 export const CarProvider: React.FC<CarProviderProps> = ({ children }) => {

@@ -1,51 +1,61 @@
 "use client";
 import { useCarContext } from "@/providers/CarContextProvider";
-import { GET_CAR_BRANDS, GET_CAR_BY_BRAND } from "@/services/queries";
+import { client } from "@/services";
+import {
+	GET_CAR_BRANDS,
+	GET_CAR_BY_BRAND,
+	GET_CAR_LIST,
+} from "@/services/queries";
 import { Brand } from "@/types/Types";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
 
 function CarsFilterOption() {
-	const [selectedBrand, setSelectedBrand] = useState<string | null>(
-		null,
-	);
+	const { data: brandList } = useQuery(GET_CAR_BRANDS);
+	const { dispatch } = useCarContext();
 
-	const { data } = useQuery(GET_CAR_BRANDS);
 	const brands = Array.from(
-		new Set(data?.carLists.map((brand: Brand) => brand.carBrand)),
-	).map((carBrand) => {
-		return {
-			carBrand: carBrand as string,
-		};
-	});
+		new Set(
+			brandList?.carLists.map((brand: Brand) => brand.carBrand),
+		) || [],
+	).map((carBrand) => ({
+		carBrand: carBrand as string,
+	}));
 
-	const { state, dispatch } = useCarContext();
-
-	const [getCarByBrand, { loading: carLoading, data: carData }] =
-		useLazyQuery(GET_CAR_BY_BRAND);
-
-	const handleBrandChange = (
+	const handleBrandChange = async (
 		e: React.ChangeEvent<HTMLSelectElement>,
 	) => {
 		const selectedBrand = e.target.value;
-		setSelectedBrand(selectedBrand);
-		dispatch({ type: "SET_SELECTED_BRAND", payload: selectedBrand });
-	};
 
-	useEffect(() => {
-		if (selectedBrand) {
-			getCarByBrand({
+		// Apollo Client sorgusunu burada yapabilirsiniz.
+		try {
+			const { data } = await client.query({
+				query:
+					selectedBrand === "all"
+						? GET_CAR_LIST
+						: GET_CAR_BY_BRAND,
 				variables: { brand: selectedBrand },
 			});
-			console.log(carData);
+
+			// Gelen veriyi kullanarak SET_CAR_LIST action'ını dispatch edin.
+			dispatch({
+				type: "SET_CAR_LIST",
+				payload: data.carLists,
+			});
+
+			// Seçilen markayı SET_SELECTED_BRAND action'ıyla dispatch edin.
+			dispatch({
+				type: "SET_SELECTED_BRAND",
+				payload: selectedBrand,
+			});
+		} catch (error) {
+			console.error("Error fetching car data by brand:", error);
 		}
-	}, [selectedBrand, getCarByBrand]);
+	};
 
 	const handlePriceFilterChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
 	) => {
 		dispatch({ type: "SET_PRICE_FILTER", payload: e.target.value });
-		// Apollo Client ile yeni sorgu atılması gerekiyor
 	};
 
 	return (
@@ -59,17 +69,18 @@ function CarsFilterOption() {
 					className="select select-bordered w-full max-w-xs"
 					onChange={handlePriceFilterChange}
 				>
-					<option disabled defaultValue={"price"}>
-						Price
-					</option>
-					<option>Min to Max</option>
-					<option>Max to Min</option>
+					<option defaultValue={"price"}>Price</option>
+					<option value={"mintomax"}>Min to Max</option>
+					<option value={"maxtomin"}>Max to Min</option>
 				</select>
 				<select
 					className="select select-bordered w-full md:block max-w-xs hidden"
 					onChange={handleBrandChange}
 				>
-					<option defaultValue={"All"}>Manufacturer</option>
+					<option defaultValue={"manufacturer"}>
+						Manufacturer
+					</option>
+					<option value={"all"}>All</option>
 					{brands.map((brand: Brand, index: number) => (
 						<option key={index} value={brand.carBrand}>
 							{brand.carBrand}

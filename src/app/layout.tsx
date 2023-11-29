@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
 import Navbar from "./components/Navbar";
 import Providers from "@/services/Providers";
 
@@ -18,18 +18,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<Providers>
+		<ClerkProvider>
 			<html lang="en">
 				<body className={inter.className}>
-					<SignedIn>
-						<Navbar />
-						{children}
-					</SignedIn>
-					<SignedOut>
-						<SignIn />
-					</SignedOut>
+					<Providers>
+						<SignedIn>
+							<Navbar />
+							{children}
+						</SignedIn>
+						<SignedOut>
+							<SignIn />
+						</SignedOut>
+					</Providers>
 				</body>
 			</html>
-		</Providers>
+		</ClerkProvider>
 	);
 }

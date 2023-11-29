@@ -27,7 +27,7 @@ export const GET_CAR_BRANDS = gql`
 `;
 
 export const GET_CAR_BY_BRAND = gql`
-	query CarLists {
+	query CarLists($brand: CarBrand!) {
 		carLists(where: { carBrand: $brand }) {
 			carAvg
 			createdAt
