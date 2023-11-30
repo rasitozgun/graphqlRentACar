@@ -5,7 +5,6 @@ export const GET_CAR_LIST = gql`
 		carLists {
 			id
 			carAvg
-			createdAt
 			name
 			price
 			carBrand
@@ -42,6 +41,15 @@ export const GET_CAR_BY_BRAND = gql`
 			image {
 				url
 			}
+		}
+	}
+`;
+
+export const GET_STORE_LOCATIONS = gql`
+	query StoreLocations {
+		storeLocations {
+			id
+			adress
 		}
 	}
 `;

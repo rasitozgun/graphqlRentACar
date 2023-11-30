@@ -26,7 +26,6 @@ function CarsFilterOption() {
 	) => {
 		const selectedBrand = e.target.value;
 
-		// Apollo Client sorgusunu burada yapabilirsiniz.
 		try {
 			const { data } = await client.query({
 				query:
@@ -36,13 +35,11 @@ function CarsFilterOption() {
 				variables: { brand: selectedBrand },
 			});
 
-			// Gelen veriyi kullanarak SET_CAR_LIST action'ını dispatch edin.
 			dispatch({
 				type: "SET_CAR_LIST",
 				payload: data.carLists,
 			});
 
-			// Seçilen markayı SET_SELECTED_BRAND action'ıyla dispatch edin.
 			dispatch({
 				type: "SET_SELECTED_BRAND",
 				payload: selectedBrand,

@@ -18,9 +18,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
-			<html lang="en">
-				<body className={inter.className}>
+		<html lang="en">
+			<body
+				className={
+					inter.className + "sm:fixed p-0 m-0 overflow-y-scroll"
+				}
+			>
+				<ClerkProvider>
 					<Providers>
 						<SignedIn>
 							<Navbar />
@@ -30,8 +34,8 @@ export default function RootLayout({
 							<SignIn />
 						</SignedOut>
 					</Providers>
-				</body>
-			</html>
-		</ClerkProvider>
+				</ClerkProvider>
+			</body>
+		</html>
 	);
 }
