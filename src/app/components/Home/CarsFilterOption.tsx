@@ -66,7 +66,9 @@ function CarsFilterOption() {
 					className="select select-bordered w-full max-w-xs"
 					onChange={handlePriceFilterChange}
 				>
-					<option defaultValue={"price"}>Price</option>
+					<option disabled defaultChecked>
+						Price
+					</option>
 					<option value={"mintomax"}>Min to Max</option>
 					<option value={"maxtomin"}>Max to Min</option>
 				</select>
@@ -74,7 +76,7 @@ function CarsFilterOption() {
 					className="select select-bordered w-full md:block max-w-xs hidden"
 					onChange={handleBrandChange}
 				>
-					<option defaultValue={"manufacturer"}>
+					<option disabled defaultChecked>
 						Manufacturer
 					</option>
 					<option value={"all"}>All</option>

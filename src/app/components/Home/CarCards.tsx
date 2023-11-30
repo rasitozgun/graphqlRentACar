@@ -3,15 +3,10 @@ import { MdAirlineSeatReclineNormal } from "react-icons/md";
 import { FaGasPump } from "react-icons/fa";
 import { PiSteeringWheelFill } from "react-icons/pi";
 import { Car } from "@/types/Types";
-import { GET_STORE_LOCATIONS } from "@/services/queries";
-import { useQuery } from "@apollo/client";
 
 function CarCards({ car }: { car: Car }) {
-	const { data, loading, error } = useQuery(GET_STORE_LOCATIONS);
-	console.log(data);
-
 	return (
-		<>
+		<div className="group bg-gray-50 p-2 sm:p-5 rounded-3xl m-1 sm:m-5 hover:bg-white border-[1px] cursor-pointer duration-50 hover:border-blue-500">
 			<h2 className="text-[20px] font-medium mb-2">{car.name}</h2>
 			<h2 className="text-[28px] font-bold mb-2">
 				<span className="text-[12px] font-light">$</span>{" "}
@@ -51,7 +46,7 @@ function CarCards({ car }: { car: Car }) {
 					</h2>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 

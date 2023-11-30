@@ -1,6 +1,6 @@
 import React from "react";
-
-function Form() {
+import { StoreLocation } from "@/types/Types";
+function Form({ storeLocation }: { storeLocation: StoreLocation[] }) {
 	return (
 		<div>
 			<div className="flex flex-col w-full mb-5">
@@ -12,10 +12,12 @@ function Form() {
 					<option disabled defaultChecked>
 						PickUp Location?
 					</option>
-					<option>
-						2038 Carrington Trace Drive, Cornelius, NC 28031
-					</option>
-					<option>456 River Hwy, Mooresville, NC 28117</option>
+					{storeLocation &&
+						storeLocation.map((location: StoreLocation) => (
+							<option key={location.id} value={location.id}>
+								{location.adress}
+							</option>
+						))}
 				</select>
 			</div>
 			<div className="flex flec-col gap-5 mb-5">

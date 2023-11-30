@@ -2,6 +2,11 @@ export type Brand = {
 	carBrand: string;
 };
 
+export type StoreLocation = {
+	id: string;
+	adress: String;
+};
+
 export type Car = {
 	id: number;
 	carAvg: number;
