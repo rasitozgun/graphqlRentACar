@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Car, StoreLocation, FormData } from "@/types/Types";
 import { useUser } from "@clerk/nextjs";
 import { CREATE_BOOKING, PUBLISH_BOOKING } from "@/services/queries";
@@ -52,7 +52,9 @@ function Form({
 		await createBooking({
 			variables: { data: formData },
 		});
+	};
 
+	useEffect(() => {
 		if (data) {
 			console.log("Booking created successfully!");
 			publishBooking({
@@ -64,13 +66,12 @@ function Form({
 		if (error) {
 			console.log(error);
 		}
-	};
+	}, [data, error]);
 
 	const handleFormSubmit = (
 		e: React.FormEvent<HTMLFormElement | HTMLButtonElement>,
 	) => {
 		e.preventDefault();
-		console.log(formData);
 		handleSubmit(formData);
 	};
 
