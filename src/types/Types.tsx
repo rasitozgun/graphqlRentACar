@@ -4,7 +4,7 @@ export type Brand = {
 
 export type StoreLocation = {
 	id: string;
-	adress: String;
+	adress: string;
 };
 
 export type Car = {

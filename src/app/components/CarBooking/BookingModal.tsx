@@ -4,16 +4,17 @@ import Form from "./Form";
 import { useQuery } from "@apollo/client";
 import { GET_STORE_LOCATIONS } from "@/services/queries";
 import { useEffect, useState } from "react";
+import Loading from "../Loading";
 
 function BookingModal({ car }: { car: Car }) {
 	const { data, loading, error } = useQuery(GET_STORE_LOCATIONS);
 	const [storeLocation, setStoreLocation] = useState<
-		StoreLocation[] | undefined
-	>(undefined);
+		StoreLocation[] | null
+	>(null);
 
 	useEffect(() => {
 		if (data) {
-			setStoreLocation(data.storeLocations); // Varsayılan olarak, sorgu tamamlanana kadar undefined olabilir.
+			setStoreLocation(data.storeLocations);
 		}
 	}, [data]);
 
@@ -29,7 +30,11 @@ function BookingModal({ car }: { car: Car }) {
 					<CarCards car={car} />
 				</div>
 				<div>
-					<Form storeLocation={storeLocation || []} />
+					{loading && <Loading />}
+					{error && <div>{error.message}</div>}
+					{!loading && !error && storeLocation && (
+						<Form storeLocation={storeLocation} />
+					)}
 				</div>
 			</div>
 			<div className="modal-action">

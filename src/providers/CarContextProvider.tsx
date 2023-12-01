@@ -50,7 +50,7 @@ const carReducer = (state: State, action: Action): State => {
 };
 
 const filterCars = (priceFilter: string | null, carList: Car[]): Car[] => {
-	let filteredList = carList;
+	let filteredList = [...carList];
 
 	if (priceFilter === "mintomax") {
 		filteredList = filteredList.sort((a, b) => a.price - b.price);
