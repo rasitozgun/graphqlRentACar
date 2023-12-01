@@ -33,15 +33,9 @@ function BookingModal({ car }: { car: Car }) {
 					{loading && <Loading />}
 					{error && <div>{error.message}</div>}
 					{!loading && !error && storeLocation && (
-						<Form storeLocation={storeLocation} />
+						<Form storeLocation={storeLocation} car={car} />
 					)}
 				</div>
-			</div>
-			<div className="modal-action">
-				<button className="btn">Close</button>
-				<button className="btn bg-blue-500 text-white hover:bg-blue-800">
-					Save
-				</button>
 			</div>
 		</form>
 	);

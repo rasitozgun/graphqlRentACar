@@ -5,8 +5,10 @@ import {
 	InMemoryCache,
 } from "@apollo/client";
 
+const GRAPH_URI = process.env.NEXT_PUBLIC_GRAPH_URI;
+
 export const client = new ApolloClient({
-	uri: "https://api-eu-central-1-shared-euc1-02.hygraph.com/v2/clpgoej3aqmqe01uia8i86mw5/master",
+	uri: GRAPH_URI,
 	cache: new InMemoryCache(),
 });
 

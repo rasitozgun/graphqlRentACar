@@ -2,6 +2,18 @@ export type Brand = {
 	carBrand: string;
 };
 
+export type FormData = {
+	location: string;
+	pickUpDate: string;
+	dropOffDate: string;
+	pickUpTime: string;
+	dropOffTime: string;
+	contactNumber: string;
+	username: string;
+	email: string;
+	carId: { connect: { id: string } };
+};
+
 export type StoreLocation = {
 	id: string;
 	adress: string;

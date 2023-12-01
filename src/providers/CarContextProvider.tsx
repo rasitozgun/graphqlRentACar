@@ -41,9 +41,6 @@ const carReducer = (state: State, action: Action): State => {
 				priceFilter: action.payload,
 				filteredCarList: filterCars(action.payload, state.carList),
 			};
-		case "FILTER_CARS":
-			// Filtreleme işlemleri burada yapılacak
-			return state;
 		default:
 			return state;
 	}

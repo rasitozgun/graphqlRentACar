@@ -53,3 +53,30 @@ export const GET_STORE_LOCATIONS = gql`
 		}
 	}
 `;
+
+export const CREATE_BOOKING = gql`
+	mutation CreateBooking($data: BookingCreateInput!) {
+		createBooking(data: $data) {
+			id
+			pickUpDate
+			dropOffDate
+			username
+			email
+			contactNumber
+			pickUpTime
+			dropOffTime
+			location
+			carId {
+				id
+			}
+		}
+	}
+`;
+
+export const PUBLISH_BOOKING = gql`
+	mutation PublishBooking($id: ID!) {
+		publishBooking(where: { id: $id }) {
+			id
+		}
+	}
+`;
