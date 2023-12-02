@@ -15,6 +15,7 @@ const initialState: State = {
 	filteredCarList: [],
 	selectedBrand: null,
 	priceFilter: null,
+	selectedCar: null,
 };
 
 interface CarContextProps {
@@ -40,6 +41,11 @@ const carReducer = (state: State, action: Action): State => {
 				...state,
 				priceFilter: action.payload,
 				filteredCarList: filterCars(action.payload, state.carList),
+			};
+		case "SET_SELECTED_CAR":
+			return {
+				...state,
+				selectedCar: action.payload,
 			};
 		default:
 			return state;

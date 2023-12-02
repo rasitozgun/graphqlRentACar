@@ -19,11 +19,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body
-				className={
-					inter.className + "sm:fixed p-0 m-0 overflow-y-scroll"
-				}
-			>
+			<body className={inter.className + " overflow-y-scroll"}>
 				<ClerkProvider>
 					<Providers>
 						<SignedIn>

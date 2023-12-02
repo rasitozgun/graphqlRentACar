@@ -6,8 +6,8 @@ function SearchInput() {
 			<h2 className="text-center text-[20px] text-gray-400">
 				Lets search what you looking for
 			</h2>
-			<div className="flex justify-center">
-				<div className="flex bg-gray-100 p-1 px-3 gap-2 rounded-full divide-x">
+			{/* <div className="flex justify-center">
+				<div className="flex bg-gray-100 p-1 px-1 gap-1 rounded-full divide-x">
 					<div className="flex items-center ">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ function SearchInput() {
 						/>
 					</div>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }

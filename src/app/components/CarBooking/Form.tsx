@@ -3,6 +3,7 @@ import { Car, StoreLocation, FormData } from "@/types/Types";
 import { useUser } from "@clerk/nextjs";
 import { CREATE_BOOKING, PUBLISH_BOOKING } from "@/services/queries";
 import { useMutation } from "@apollo/client";
+import { useCarContext } from "@/providers/CarContextProvider";
 
 function Form({
 	storeLocation,
@@ -23,6 +24,8 @@ function Form({
 		email: "",
 		carId: { connect: { id: "" } },
 	});
+
+	const { dispatch } = useCarContext();
 
 	const today: Date = new Date();
 
@@ -73,6 +76,11 @@ function Form({
 	) => {
 		e.preventDefault();
 		handleSubmit(formData);
+	};
+
+	const handleClose = () => {
+		dispatch({ type: "SET_SELECTED_CAR", payload: null });
+		(window as any).car_modal.close();
 	};
 
 	return (
@@ -152,8 +160,10 @@ function Form({
 					onChange={handleChange}
 				/>
 			</div>
-			<div className="modal-action">
-				<button className="btn">Close</button>
+			<div>
+				<button className="btn" onClick={handleClose}>
+					Close
+				</button>
 				<button
 					onClick={handleFormSubmit}
 					className="btn bg-blue-500 text-white hover:bg-blue-800"

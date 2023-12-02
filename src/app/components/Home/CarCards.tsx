@@ -29,19 +29,19 @@ function CarCards({ car }: { car: Car }) {
 			<div className="flex justify-around ">
 				<div className="text-center text-gray-500">
 					<PiSteeringWheelFill className="w-full text-[22px] mb-2" />
-					<h2 className="line-clamp-5 text-[14px] font-light">
+					<h2 className="line-clamp-5 text-[14px] sm:text-[8px	] font-light">
 						{car.carType}
 					</h2>
 				</div>
 				<div className="text-center text-gray-500">
 					<MdAirlineSeatReclineNormal className="w-full text-[22px] mb-2" />
-					<h2 className="line-clamp-5 text-[14px] font-light">
+					<h2 className="line-clamp-5 text-[14px] sm:text-[8px	] font-light">
 						{car.seat}
 					</h2>
 				</div>
 				<div className="text-center text-gray-500">
 					<FaGasPump className="w-full text-[22px] mb-2" />
-					<h2 className="line-clamp-5 text-[14px] font-light">
+					<h2 className="line-clamp-5 text-[14px] sm:text-[8px	] font-light">
 						{car.carAvg} MPG
 					</h2>
 				</div>

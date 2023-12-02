@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_CAR_LIST } from "@/services/queries";
 import CarCards from "./CarCards";
 import { useCarContext } from "@/providers/CarContextProvider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Car } from "@/types/Types";
 import BookingModal from "../CarBooking/BookingModal";
 import Loading from "../Loading";
@@ -11,7 +11,6 @@ import Loading from "../Loading";
 function CarList() {
 	const { state, dispatch } = useCarContext();
 	const { data, loading, error } = useQuery(GET_CAR_LIST);
-	const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
 	useEffect(() => {
 		if (data) {
@@ -20,21 +19,21 @@ function CarList() {
 	}, [data, dispatch]);
 
 	const openModal = async (car: Car) => {
-		setSelectedCar(car);
+		dispatch({ type: "SET_SELECTED_CAR", payload: car });
 	};
 
 	useEffect(() => {
-		if (selectedCar) {
+		if (state.selectedCar) {
 			(window as any).car_modal.showModal();
 		}
-	}, [selectedCar]);
+	}, [state.selectedCar]);
 
 	return (
 		<>
 			{loading && <Loading />}
 			{error && <div>{error.message}</div>}
 			{state && (
-				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
 					{state.filteredCarList.map((car: Car) => (
 						<div onClick={() => openModal(car)} key={car.id}>
 							<CarCards car={car} />
@@ -42,9 +41,9 @@ function CarList() {
 					))}
 				</div>
 			)}
-			{selectedCar && (
+			{state.selectedCar && (
 				<dialog id="car_modal" className="modal">
-					<BookingModal car={selectedCar} />
+					<BookingModal car={state.selectedCar} />
 				</dialog>
 			)}
 		</>
