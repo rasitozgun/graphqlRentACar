@@ -58,13 +58,11 @@ export const CREATE_BOOKING = gql`
 	mutation CreateBooking($data: BookingCreateInput!) {
 		createBooking(data: $data) {
 			id
-			pickUpDate
-			dropOffDate
+			pickUpDateTime
+			dropOffDateTime
 			username
 			email
 			contactNumber
-			pickUpTime
-			dropOffTime
 			location
 			carId {
 				id

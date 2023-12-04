@@ -16,10 +16,8 @@ function Form({
 	const user = useUser();
 	const [formData, setFormData] = useState<FormData>({
 		location: "",
-		pickUpDate: "",
-		dropOffDate: "",
-		pickUpTime: "",
-		dropOffTime: "",
+		pickUpDateTime: "",
+		dropOffDateTime: "",
 		contactNumber: "",
 		username: "",
 		email: "",
@@ -33,8 +31,6 @@ function Form({
 
 	useEffect(() => {
 		if (car) {
-			console.log(user);
-
 			setFormData((prevData) => ({
 				...prevData,
 				username: user?.user?.fullName || "",
@@ -47,17 +43,50 @@ function Form({
 	const handleChange = (
 		e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
 	) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		if (
+			e.target.name === "pickUpDateTime" ||
+			e.target.name === "dropOffDateTime"
+		) {
+			const dateObject = new Date(e.target.value);
+
+			setFormData({
+				...formData,
+				[e.target.name]: dateObject.toISOString(),
+			});
+		} else if (e.target.name === "contactNumber") {
+			const inputValue: string = e.target.value.replace(/\D/g, "");
+
+			const formattedPhoneNumber: string =
+				formatPhoneNumber(inputValue);
+
+			console.log(formattedPhoneNumber);
+			setFormData({
+				...formData,
+				[e.target.name]: formattedPhoneNumber,
+			});
+		} else {
+			setFormData({ ...formData, [e.target.name]: e.target.value });
+		}
+	};
+
+	const formatPhoneNumber = (input: string) => {
+		const phoneRegex =
+			/^\+905(\d{3})[-\s]?(\d{2})[-\s]?(\d{2})[-\s]?(\d{2})$/;
+		const match = input.match(phoneRegex);
+
+		if (match) {
+			return `+905${match[1]} ${match[2]} ${match[3]} ${match[4]}`;
+		} else {
+			return input;
+		}
+	};
+
+	const addZero = (num: number) => {
+		return num < 10 ? `0${num}` : num;
 	};
 
 	const [createBooking, { data, error }] = useMutation(CREATE_BOOKING);
 	const [publishBooking] = useMutation(PUBLISH_BOOKING);
-
-	const handleSubmit = async (formData: FormData) => {
-		await createBooking({
-			variables: { data: formData },
-		});
-	};
 
 	useEffect(() => {
 		if (data) {
@@ -74,6 +103,14 @@ function Form({
 			updateToast("Something went wrong!", "error", true);
 		}
 	}, [data, error]);
+
+	const handleSubmit = async (formData: FormData) => {
+		console.log(formData);
+
+		await createBooking({
+			variables: { data: formData },
+		});
+	};
 
 	const handleFormSubmit = (
 		e: React.FormEvent<HTMLFormElement | HTMLButtonElement>,
@@ -95,6 +132,7 @@ function Form({
 					className="select  select-bordered w-full max-w-lg"
 					name="location"
 					onChange={handleChange}
+					required
 				>
 					<option disabled value="" hidden selected>
 						Pick up location?
@@ -107,53 +145,38 @@ function Form({
 						))}
 				</select>
 			</div>
-			<div className="flex flec-col gap-5 mb-5">
+			<div className="flex flex-col gap-5 mb-5">
 				<div className="flex flex-col w-full">
 					<label className="text-gray-400">Pick Up Date</label>
 					<input
-						type="date"
-						min={today.toISOString().split("T")[0]}
+						type="datetime-local"
+						min={`${today.getFullYear()}-${addZero(
+							today.getMonth() + 1,
+						)}-${addZero(today.getDate())}T${addZero(
+							today.getHours(),
+						)}:${addZero(today.getMinutes())}`}
 						placeholder="Type here"
 						className="input input-bordered w-full max-w-lg"
-						name="pickUpDate"
+						name="pickUpDateTime"
 						onChange={handleChange}
+						required
 					/>
 				</div>
 				<div className="flex flex-col w-full">
 					<label className="text-gray-400">Drop Off Date</label>
 					<input
-						type="date"
+						type="datetime-local"
 						placeholder="Type here"
-						className="input input-bordered w-full max-w-lg"
-						name="dropOffDate"
+						className="input input-bordered max-w-lg"
+						name="dropOffDateTime"
 						onChange={handleChange}
-						disabled={formData.pickUpDate === ""}
-						min={(formData.pickUpDate as string).split("T")[0]}
+						disabled={formData.pickUpDateTime === ""}
+						min={formData.pickUpDateTime}
+						required
 					/>
 				</div>
 			</div>
-			<div className="flex gap-5 ">
-				<div className="flex flex-col w-full mb-5">
-					<label className="text-gray-400">Pick Up Time</label>
-					<input
-						type="time"
-						placeholder="Type here"
-						className="input input-bordered w-full max-w-lg"
-						name="pickUpTime"
-						onChange={handleChange}
-					/>
-				</div>
-				<div className="flex flex-col w-full mb-5">
-					<label className="text-gray-400">Drop Off Time</label>
-					<input
-						type="time"
-						placeholder="Type here"
-						className="input input-bordered w-full max-w-lg"
-						name="dropOffTime"
-						onChange={handleChange}
-					/>
-				</div>
-			</div>
+
 			<div className="flex flex-col w-full mb-5">
 				<label className="text-gray-400">Contact Number</label>
 				<input
@@ -161,10 +184,12 @@ function Form({
 					placeholder="Type here"
 					className="input input-bordered w-full max-w-lg"
 					name="contactNumber"
+					value={formData.contactNumber}
 					onChange={handleChange}
+					required
 				/>
 			</div>
-			<div>
+			<div className="flex justify-between">
 				<button className="btn" onClick={handleClose}>
 					Close
 				</button>

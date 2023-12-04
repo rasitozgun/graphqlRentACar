@@ -4,10 +4,8 @@ export type Brand = {
 
 export type FormData = {
 	location: string;
-	pickUpDate: string;
-	dropOffDate: string;
-	pickUpTime: string;
-	dropOffTime: string;
+	pickUpDateTime: string;
+	dropOffDateTime: string;
 	contactNumber: string;
 	username: string;
 	email: string;
