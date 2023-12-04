@@ -1,14 +1,23 @@
 "use client";
 import { createContext, useContext, useReducer, ReactNode } from "react";
-import { Car, Action, State } from "@/types/Types";
+import { Car, State } from "@/types/Types";
 
 interface CarProviderProps {
 	children: ReactNode;
 }
+interface CarContextProps {
+	state: State;
+	dispatch: React.Dispatch<Action>;
+}
 
-const CarContext = createContext<
-	{ state: State; dispatch: React.Dispatch<Action> } | undefined
->(undefined);
+type Action =
+	| { type: "SET_CAR_LIST"; payload: Car[] }
+	| { type: "SET_SELECTED_BRAND"; payload: string }
+	| { type: "SET_PRICE_FILTER"; payload: string }
+	| { type: "FILTER_CARS" }
+	| { type: "SET_SELECTED_CAR"; payload: Car | null };
+
+const CarContext = createContext<CarContextProps | undefined>(undefined);
 
 const initialState: State = {
 	carList: [],
@@ -17,11 +26,6 @@ const initialState: State = {
 	priceFilter: null,
 	selectedCar: null,
 };
-
-interface CarContextProps {
-	state: State;
-	dispatch: React.Dispatch<Action>;
-}
 
 const carReducer = (state: State, action: Action): State => {
 	switch (action.type) {
@@ -74,7 +78,7 @@ export const CarProvider: React.FC<CarProviderProps> = ({ children }) => {
 	);
 };
 
-export const useCarContext = (): CarContextProps => {
+export const useCarContext = () => {
 	const context = useContext(CarContext);
 	if (!context) {
 		throw new Error("useCarContext must be used within a CarProvider");

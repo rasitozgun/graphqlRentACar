@@ -1,5 +1,5 @@
 "use client";
-import { useCarContext } from "@/providers/CarContextProvider";
+import { useCarContext } from "@/context/CarContext";
 import { client } from "@/services";
 import {
 	GET_CAR_BRANDS,

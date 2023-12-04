@@ -2,7 +2,7 @@
 import { useQuery } from "@apollo/client";
 import { GET_CAR_LIST } from "@/services/queries";
 import CarCards from "./CarCards";
-import { useCarContext } from "@/providers/CarContextProvider";
+import { useCarContext } from "@/context/CarContext";
 import { useEffect } from "react";
 import { Car } from "@/types/Types";
 import BookingModal from "../CarBooking/BookingModal";

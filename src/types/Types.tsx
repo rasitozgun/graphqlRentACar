@@ -40,10 +40,3 @@ export type State = {
 	priceFilter: string | null;
 	selectedCar: Car | null;
 };
-
-export type Action =
-	| { type: "SET_CAR_LIST"; payload: Car[] }
-	| { type: "SET_SELECTED_BRAND"; payload: string }
-	| { type: "SET_PRICE_FILTER"; payload: string }
-	| { type: "FILTER_CARS" }
-	| { type: "SET_SELECTED_CAR"; payload: Car | null };

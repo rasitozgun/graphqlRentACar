@@ -1,9 +1,10 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Car, StoreLocation, FormData } from "@/types/Types";
 import { useUser } from "@clerk/nextjs";
 import { CREATE_BOOKING, PUBLISH_BOOKING } from "@/services/queries";
 import { useMutation } from "@apollo/client";
-import { useCarContext } from "@/providers/CarContextProvider";
+import { useCarContext } from "@/context/CarContext";
+import { useBookingToastContext } from "@/context/BookingToastContext";
 
 function Form({
 	storeLocation,
@@ -26,6 +27,7 @@ function Form({
 	});
 
 	const { dispatch } = useCarContext();
+	const { updateToast } = useBookingToastContext();
 
 	const today: Date = new Date();
 
@@ -64,10 +66,12 @@ function Form({
 				variables: { id: data.createBooking.id },
 			});
 			(window as any).car_modal.close();
+			updateToast("Booking created successfully!", "success", true);
 		}
 
 		if (error) {
 			console.log(error);
+			updateToast("Something went wrong!", "error", true);
 		}
 	}, [data, error]);
 
