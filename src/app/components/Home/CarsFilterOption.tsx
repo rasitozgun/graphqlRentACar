@@ -65,8 +65,9 @@ function CarsFilterOption() {
 				<select
 					className="select select-bordered w-full max-w-xs"
 					onChange={handlePriceFilterChange}
+					defaultValue={"price"}
 				>
-					<option disabled value="" hidden selected>
+					<option disabled value="price" hidden>
 						Price
 					</option>
 					<option value={"mintomax"}>Min to Max</option>
@@ -75,13 +76,18 @@ function CarsFilterOption() {
 				<select
 					className="select select-bordered w-full md:block max-w-xs hidden"
 					onChange={handleBrandChange}
+					defaultValue={"manufacturer"}
 				>
-					<option disabled value="" hidden selected>
-						Manufacturer
+					<option disabled value="manufacturer" hidden>
+						Brand
 					</option>
 					<option value={"all"}>All</option>
 					{brands.map((brand: Brand, index: number) => (
-						<option key={index} value={brand.carBrand}>
+						<option
+							className="my-5 py-5"
+							key={index}
+							value={brand.carBrand}
+						>
 							{brand.carBrand}
 						</option>
 					))}

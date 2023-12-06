@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
-import { Car, StoreLocation, FormData } from "@/types/Types";
 import { useUser } from "@clerk/nextjs";
-import { CREATE_BOOKING, PUBLISH_BOOKING } from "@/services/queries";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { useCarContext } from "@/context/CarContext";
+import { Car, StoreLocation, FormData } from "@/types/Types";
+import { CREATE_BOOKING, PUBLISH_BOOKING } from "@/services/queries";
 import { useBookingToastContext } from "@/context/BookingToastContext";
+import { formatPhoneNumber, addZero } from "@/functions/functions";
+import ButtonGroup from "./BottomBar/ButtonGroup";
+import FullPrice from "./BottomBar/FullPrice";
+import { useCarContext } from "@/context/CarContext";
 
 function Form({
 	storeLocation,
@@ -23,17 +26,16 @@ function Form({
 		email: "",
 		carId: { connect: { id: "" } },
 	});
-
 	const { dispatch } = useCarContext();
-	const { updateToast } = useBookingToastContext();
 
-	const today: Date = new Date();
+	const { updateToast } = useBookingToastContext();
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		if (car) {
 			setFormData((prevData) => ({
 				...prevData,
-				username: user?.user?.fullName || "",
+				username: user?.user?.username || "",
 				email: user?.user?.primaryEmailAddress?.emailAddress || "",
 				carId: { connect: { id: car.id.toString() } },
 			}));
@@ -41,7 +43,7 @@ function Form({
 	}, [car]);
 
 	const handleChange = (
-		e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>,
+		e: ChangeEvent<HTMLSelectElement | HTMLInputElement>,
 	) => {
 		if (
 			e.target.name === "pickUpDateTime" ||
@@ -54,35 +56,34 @@ function Form({
 				[e.target.name]: dateObject.toISOString(),
 			});
 		} else if (e.target.name === "contactNumber") {
-			const inputValue: string = e.target.value.replace(/\D/g, "");
+			const target = e.target as HTMLInputElement;
+			if (target instanceof HTMLInputElement) {
+				const { value, selectionStart, selectionEnd } = target;
+				const formattedPhoneNumber = formatPhoneNumber(value);
 
-			const formattedPhoneNumber: string =
-				formatPhoneNumber(inputValue);
+				setFormData({
+					...formData,
+					[e.target.name]: formattedPhoneNumber,
+				});
 
-			console.log(formattedPhoneNumber);
-			setFormData({
-				...formData,
-				[e.target.name]: formattedPhoneNumber,
-			});
+				if (inputRef.current) {
+					if (selectionStart !== null && selectionEnd !== null) {
+						const position =
+							formattedPhoneNumber.indexOf(
+								value[selectionStart - 1],
+								selectionEnd - 1,
+							) + 1 || selectionEnd;
+
+						inputRef.current.setSelectionRange(
+							position,
+							position,
+						);
+					}
+				}
+			}
 		} else {
 			setFormData({ ...formData, [e.target.name]: e.target.value });
 		}
-	};
-
-	const formatPhoneNumber = (input: string) => {
-		const phoneRegex =
-			/^\+905(\d{3})[-\s]?(\d{2})[-\s]?(\d{2})[-\s]?(\d{2})$/;
-		const match = input.match(phoneRegex);
-
-		if (match) {
-			return `+905${match[1]} ${match[2]} ${match[3]} ${match[4]}`;
-		} else {
-			return input;
-		}
-	};
-
-	const addZero = (num: number) => {
-		return num < 10 ? `0${num}` : num;
 	};
 
 	const [createBooking, { data, error }] = useMutation(CREATE_BOOKING);
@@ -90,11 +91,11 @@ function Form({
 
 	useEffect(() => {
 		if (data) {
-			console.log("Booking created successfully!");
 			publishBooking({
 				variables: { id: data.createBooking.id },
 			});
 			(window as any).car_modal.close();
+			dispatch({ type: "SET_SELECTED_CAR", payload: null });
 			updateToast("Booking created successfully!", "success", true);
 		}
 
@@ -104,25 +105,7 @@ function Form({
 		}
 	}, [data, error]);
 
-	const handleSubmit = async (formData: FormData) => {
-		console.log(formData);
-
-		await createBooking({
-			variables: { data: formData },
-		});
-	};
-
-	const handleFormSubmit = (
-		e: React.FormEvent<HTMLFormElement | HTMLButtonElement>,
-	) => {
-		e.preventDefault();
-		handleSubmit(formData);
-	};
-
-	const handleClose = () => {
-		dispatch({ type: "SET_SELECTED_CAR", payload: null });
-		(window as any).car_modal.close();
-	};
+	const today: Date = new Date();
 
 	return (
 		<div>
@@ -133,8 +116,9 @@ function Form({
 					name="location"
 					onChange={handleChange}
 					required
+					defaultValue={"pickup"}
 				>
-					<option disabled value="" hidden selected>
+					<option disabled value="pickup" hidden>
 						Pick up location?
 					</option>
 					{storeLocation &&
@@ -171,7 +155,10 @@ function Form({
 						name="dropOffDateTime"
 						onChange={handleChange}
 						disabled={formData.pickUpDateTime === ""}
-						min={formData.pickUpDateTime}
+						min={`${formData.pickUpDateTime.slice(
+							0,
+							10,
+						)}T${formData.pickUpDateTime.slice(11, 16)}`}
 						required
 					/>
 				</div>
@@ -180,25 +167,23 @@ function Form({
 			<div className="flex flex-col w-full mb-5">
 				<label className="text-gray-400">Contact Number</label>
 				<input
-					type="text"
+					type="tel"
 					placeholder="Type here"
 					className="input input-bordered w-full max-w-lg"
 					name="contactNumber"
 					value={formData.contactNumber}
 					onChange={handleChange}
 					required
+					ref={inputRef}
 				/>
 			</div>
 			<div className="flex justify-between">
-				<button className="btn" onClick={handleClose}>
-					Close
-				</button>
-				<button
-					onClick={handleFormSubmit}
-					className="btn bg-blue-500 text-white hover:bg-blue-800"
-				>
-					Save
-				</button>
+				<FullPrice car={car} formData={formData} />
+				<ButtonGroup
+					formData={formData}
+					createBooking={createBooking}
+					dispatch={dispatch}
+				/>
 			</div>
 		</div>
 	);

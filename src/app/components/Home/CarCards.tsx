@@ -19,7 +19,7 @@ function CarCards({ car }: { car: Car }) {
 						src={car.image.url}
 						width={220}
 						height={200}
-						className="w-[250px] h-[150px] mb-3 object-contain"
+						className="w-[250px] h-[150px] mb-3 object-contain hover:scale-125 duration-200"
 						alt={car.name}
 					/>
 				) : (

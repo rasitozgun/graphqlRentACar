@@ -1,5 +1,4 @@
 "use client";
-import SearchInput from "./SearchInput";
 import CarsFilterOption from "./CarsFilterOption";
 import CarList from "./CarList";
 import ErrorToast from "../ErrorToast";
@@ -11,7 +10,7 @@ function CarSection() {
 
 	return (
 		<>
-			<SearchInput />
+			{/* <SearchInput /> */}
 			<CarsFilterOption />
 			<CarList />
 			{show && type === "error" && <ErrorToast message={message} />}
