@@ -56,7 +56,7 @@ function CarsFilterOption() {
 	};
 
 	return (
-		<div className="mt-10 flex items-center justify-between">
+		<div className="mt-4 flex items-center justify-between">
 			<div>
 				<h2 className="text-[30px] font-bold">Cars Catalog</h2>
 				<h2>Explore cars you might like</h2>

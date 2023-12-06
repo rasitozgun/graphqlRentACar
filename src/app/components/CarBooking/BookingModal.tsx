@@ -4,7 +4,7 @@ import Form from "./Form";
 import { useQuery } from "@apollo/client";
 import { GET_STORE_LOCATIONS } from "@/services/queries";
 import { useEffect, useState } from "react";
-import Loading from "../Loading";
+import CardSkeleton from "../Skeletons/CardSkeleton";
 
 function BookingModal({ car }: { car: Car }) {
 	const { data, loading, error } = useQuery(GET_STORE_LOCATIONS);
@@ -19,7 +19,7 @@ function BookingModal({ car }: { car: Car }) {
 	}, [data]);
 
 	return (
-		<form className="modal-box w-11/12 max-w-5xl" method="dialog">
+		<div className="modal-box w-11/12 max-w-5xl">
 			<div className="border-b-[1px] pb-2 ">
 				<h3 className=" text-[30px] font-light text-gray-400">
 					Rent A Car Now!
@@ -27,17 +27,20 @@ function BookingModal({ car }: { car: Car }) {
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-2 p-5">
 				<div>
-					<CarCards car={car} />
+					{loading && <CardSkeleton />}
+					{!loading && !error && storeLocation && (
+						<CarCards car={car} />
+					)}
 				</div>
 				<div>
-					{loading && <Loading />}
+					{loading && <CardSkeleton />}
 					{error && <div>{error.message}</div>}
 					{!loading && !error && storeLocation && (
 						<Form storeLocation={storeLocation} car={car} />
 					)}
 				</div>
 			</div>
-		</form>
+		</div>
 	);
 }
 

@@ -6,7 +6,7 @@ import { useCarContext } from "@/context/CarContext";
 import { useEffect } from "react";
 import { Car } from "@/types/Types";
 import BookingModal from "../CarBooking/BookingModal";
-import Loading from "../Loading";
+import CardSkeleton from "../Skeletons/CardSkeleton";
 
 function CarList() {
 	const { state, dispatch } = useCarContext();
@@ -29,8 +29,14 @@ function CarList() {
 	}, [state.selectedCar]);
 
 	return (
-		<>
-			{loading && <Loading />}
+		<div>
+			{loading && (
+				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+					{[...Array(4)].map((_, i) => (
+						<CardSkeleton key={i} />
+					))}
+				</div>
+			)}
 			{error && <div>{error.message}</div>}
 			{state && (
 				<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
@@ -46,7 +52,7 @@ function CarList() {
 					<BookingModal car={state.selectedCar} />
 				</dialog>
 			)}
-		</>
+		</div>
 	);
 }
 

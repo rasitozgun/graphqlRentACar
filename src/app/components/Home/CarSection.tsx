@@ -9,7 +9,7 @@ function CarSection() {
 	const { message, show, type } = useBookingToastContext();
 
 	return (
-		<>
+		<div>
 			{/* <SearchInput /> */}
 			<CarsFilterOption />
 			<CarList />
@@ -17,7 +17,7 @@ function CarSection() {
 			{show && type === "success" && (
 				<SuccessToast message={message} />
 			)}
-		</>
+		</div>
 	);
 }
 

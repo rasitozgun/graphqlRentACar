@@ -3,9 +3,13 @@ import Hero from "./components/Home/Hero";
 
 export default function Home() {
 	return (
-		<div className="p-5 sm:px-10 md:px-20">
-			<Hero />
-			<CarSection />
+		<div>
+			<div className="bg-[#34dbd3]">
+				<Hero />
+			</div>
+			<div className="py-5 px-20" id="carsection">
+				<CarSection />
+			</div>
 		</div>
 	);
 }
