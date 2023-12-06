@@ -15,6 +15,7 @@ function Navbar() {
 				width={120}
 				height={120}
 				className="w-auto h-auto"
+				loading="eager"
 				priority
 			/>
 			<div className="hidden md:flex gap-5">

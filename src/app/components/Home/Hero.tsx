@@ -36,6 +36,7 @@ function Hero() {
 					height={500}
 					alt="hero"
 					className="w-full object-cover align-middle"
+					loading="eager"
 				/>
 			</div>
 		</div>

@@ -21,6 +21,7 @@ function CarCards({ car }: { car: Car }) {
 						height={200}
 						className="w-[250px] h-[150px] mb-3 object-contain md:hover:scale-125 duration-200"
 						alt={car.name}
+						loading="eager"
 					/>
 				) : (
 					<span>Image not available</span>
