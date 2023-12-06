@@ -62,36 +62,42 @@ function CarsFilterOption() {
 				<h2>Explore cars you might like</h2>
 			</div>
 			<div className="flex gap-5">
-				<select
-					className="select select-bordered w-full max-w-xs"
-					onChange={handlePriceFilterChange}
-					defaultValue={"price"}
-				>
-					<option disabled value="price" hidden>
-						Price
-					</option>
-					<option value={"mintomax"}>Min to Max</option>
-					<option value={"maxtomin"}>Max to Min</option>
-				</select>
-				<select
-					className="select select-bordered w-full md:block max-w-xs hidden"
-					onChange={handleBrandChange}
-					defaultValue={"manufacturer"}
-				>
-					<option disabled value="manufacturer" hidden>
-						Brand
-					</option>
-					<option value={"all"}>All</option>
-					{brands.map((brand: Brand, index: number) => (
-						<option
-							className="my-5 py-5"
-							key={index}
-							value={brand.carBrand}
-						>
-							{brand.carBrand}
+				<div>
+					<label className="text-gray-500">Sort by</label>
+					<select
+						className="select select-bordered w-full max-w-xs"
+						onChange={handlePriceFilterChange}
+						defaultValue={"price"}
+					>
+						<option disabled value="price" hidden>
+							Price
 						</option>
-					))}
-				</select>
+						<option value={"mintomax"}>Min to Max</option>
+						<option value={"maxtomin"}>Max to Min</option>
+					</select>
+				</div>
+				<div>
+					<label className="text-gray-500">Filter by</label>
+					<select
+						className="select select-bordered w-full md:block max-w-xs hidden"
+						onChange={handleBrandChange}
+						defaultValue={"manufacturer"}
+					>
+						<option disabled value="manufacturer" hidden>
+							Brand
+						</option>
+						<option value={"all"}>All</option>
+						{brands.map((brand: Brand, index: number) => (
+							<option
+								className="my-5 py-5"
+								key={index}
+								value={brand.carBrand}
+							>
+								{brand.carBrand}
+							</option>
+						))}
+					</select>
+				</div>
 			</div>
 		</div>
 	);
