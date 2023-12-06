@@ -24,7 +24,7 @@ function Hero() {
 				<button
 					type="button"
 					onClick={handleClick}
-					className=" p-2 mt-5 bg-blue-500 text-white px-4 rounded-full hover:scale-105 transition-all"
+					className=" p-2 mt-5 bg-blue-600 text-white px-4 rounded-full hover:scale-105 transition-all"
 				>
 					Explore Cars
 				</button>

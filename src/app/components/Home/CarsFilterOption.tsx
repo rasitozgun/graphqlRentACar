@@ -63,11 +63,14 @@ function CarsFilterOption() {
 			</div>
 			<div className="flex gap-5">
 				<div>
-					<label className="text-gray-500">Sort by</label>
+					<label htmlFor="price" className="text-gray-500">
+						Sort by
+					</label>
 					<select
 						className="select select-bordered w-full max-w-xs"
 						onChange={handlePriceFilterChange}
 						defaultValue={"price"}
+						name="price"
 					>
 						<option disabled value="price" hidden>
 							Price
@@ -77,10 +80,13 @@ function CarsFilterOption() {
 					</select>
 				</div>
 				<div>
-					<label className="text-gray-500">Filter by</label>
+					<label htmlFor="brand" className="text-gray-500">
+						Filter by
+					</label>
 					<select
 						className="select select-bordered w-full md:block max-w-xs hidden"
 						onChange={handleBrandChange}
+						name="brand"
 						defaultValue={"manufacturer"}
 					>
 						<option disabled value="manufacturer" hidden>
