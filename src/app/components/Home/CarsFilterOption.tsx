@@ -71,6 +71,7 @@ function CarsFilterOption() {
 						onChange={handlePriceFilterChange}
 						defaultValue={"price"}
 						name="price"
+						id="price"
 					>
 						<option disabled value="price" hidden>
 							Price
@@ -87,6 +88,7 @@ function CarsFilterOption() {
 						className="select select-bordered w-full md:block max-w-xs hidden"
 						onChange={handleBrandChange}
 						name="brand"
+						id="brand"
 						defaultValue={"manufacturer"}
 					>
 						<option disabled value="manufacturer" hidden>
