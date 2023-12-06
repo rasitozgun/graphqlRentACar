@@ -10,7 +10,7 @@ function Hero() {
 		}
 	};
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 py-8 md:px-20 px-10 ">
+		<div className="grid grid-cols-1 md:grid-cols-2 py-12 md:px-20 px-10 ">
 			<div>
 				<h2 className="text-[40px] md:text-[60px] font-bold">
 					Premium Car{" "}
